@@ -24,7 +24,14 @@ export default function RootLayout({
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <div className='relative flex min-h-dvh flex-col'>
               <Header />
-              <main className='flex-1 relative'>{children} </main>
+              <div className='flex overflow-y-auto overflow-hidden h-full'>
+                <main
+                  id='cdcastellon-main'
+                  className='flex-1 relative px-6 h-full grow overflow-hidden overflow-y-auto py-2'
+                >
+                  {children}
+                </main>
+              </div>
             </div>
           </ThemeProvider>
         </MatchProvider>

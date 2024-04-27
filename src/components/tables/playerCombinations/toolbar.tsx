@@ -25,13 +25,13 @@ export function DataTableToolbar<TData>({ table }: DataTableToolbarProps<TData>)
         <Input
           placeholder='Filter Passer...'
           value={(table.getColumn('passer_name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('player_name')?.setFilterValue(event.target.value)}
+          onChange={(event) => table.getColumn('passer_name')?.setFilterValue(event.target.value)}
           className='h-8 w-[150px] lg:w-[250px]'
         />
         <Input
           placeholder='Filter Receiver...'
-          value={(table.getColumn('passer_name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('player_name')?.setFilterValue(event.target.value)}
+          value={(table.getColumn('recipient_name')?.getFilterValue() as string) ?? ''}
+          onChange={(event) => table.getColumn('recipient_name')?.setFilterValue(event.target.value)}
           className='h-8 w-[150px] lg:w-[250px]'
         />
         {isFiltered && (

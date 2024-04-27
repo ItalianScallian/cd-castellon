@@ -28,10 +28,11 @@ function analyzePlayerCombinations(passes: Pass[]): Combination[] {
   return Object.values(combinations).flat();
 }
 
-export default function commonPlayerCombinations(matchId?: number) {
+export default function commonPlayerCombinations(matchId?: number, teamName?: string) {
   const completedPasses = castellonData.passes.filter(
     (pass) =>
       (pass.match_id === matchId || matchId === undefined) &&
+      (teamName === pass.team_name || teamName === '' || teamName === undefined) &&
       pass.outcome_name === 'Complete' &&
       pass.pass_recipient_id !== null
   );
