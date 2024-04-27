@@ -1,20 +1,5 @@
-import { Pass } from '@/types';
+import { Combination, Pass } from '@/types';
 import castellonData from '../../data/data.json';
-
-interface Combination {
-  count: number;
-  totalValueAdded: number;
-  team_name: string;
-  passer_id: number;
-  passer_name: string;
-  recipient_id: number;
-  recipient_name: string;
-}
-
-interface CombinationResults {
-  mostCommon: Combination[];
-  mostFruitful: Combination[];
-}
 
 type CombinationMap = Record<string, Combination>;
 
@@ -51,7 +36,7 @@ export default function commonPlayerCombinations(matchId?: number) {
       pass.pass_recipient_id !== null
   );
   const combinations = analyzePlayerCombinations(completedPasses);
-  const result = combinations.sort((a,b) => b.count-a.count)
+  const result = combinations.sort((a, b) => b.count - a.count);
 
   return result;
 }

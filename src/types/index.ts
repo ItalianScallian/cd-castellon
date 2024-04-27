@@ -45,3 +45,13 @@ export interface PlayerPassDetails {
   player_name: string;
   team_name: string;
 }
+
+export interface Combination {
+  count: number;
+  totalValueAdded: number;
+  team_name: string;
+  passer_id: number;
+  passer_name: string;
+  recipient_id: number;
+  recipient_name: string;
+}

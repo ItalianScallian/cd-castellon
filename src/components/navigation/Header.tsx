@@ -1,11 +1,10 @@
 import React from 'react';
 import { ThemeToggle } from '../ui/ThemeToggle';
-import castellonData from '../../../data/data.json';
 import MatchSwitcher from './MatchSwitcher';
 
 const Header = () => {
   return (
-    <div className='hidden flex-col md:flex sticky top-0 right-0 left-0 w-full shadow-lg z-10 bg-background border-b'>
+    <div className='flex-col md:flex sticky top-0 right-0 left-0 w-full shadow-lg z-10 bg-background border-b'>
       <div className='w-full flex space-between h-16 items-center justify-between px-4'>
         <div>{'CD Castellon Match Data'}</div>
         <div className='w-1/3'>

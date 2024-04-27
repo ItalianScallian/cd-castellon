@@ -29,7 +29,7 @@ export default function MatchSwitcher() {
           role='combobox'
           aria-expanded={open}
           aria-label='Select a match'
-          className='w-[400px] justify-between'
+          className='w-[175px] md:w-[400px] justify-between'
         >
           {currentMatch ? matchUIElements.find((match) => match.value === currentMatch)?.label : 'Select Match...'}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />

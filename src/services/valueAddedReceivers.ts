@@ -1,10 +1,6 @@
 import { Pass, PlayerPassDetails } from '@/types';
 import castellonData from '../../data/data.json';
 
-interface AggregatedPassDetails {
-  [key: string]: PlayerPassDetails[];
-}
-
 export default function valueAddedReceivers(matchId?: number) {
   const completedPasses = castellonData.passes.filter(
     (pass) =>

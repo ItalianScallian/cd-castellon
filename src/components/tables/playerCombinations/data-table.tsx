@@ -16,6 +16,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { DataTablePagination } from './pagination';
+import { DataTableToolbar } from './toolbar';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -41,21 +43,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   });
 
   return (
-    <div>
-      <div className='flex items-center space-x-2 py-4'>
-        <Input
-          placeholder='Filter Columns by Team...'
-          value={(table.getColumn('team_name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('team_name')?.setFilterValue(event.target.value)}
-          className='max-w-sm'
-        />
-        <Input
-          placeholder='Filter Columns by Player...'
-          value={(table.getColumn('player_name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('player_name')?.setFilterValue(event.target.value)}
-          className='max-w-sm'
-        />
-      </div>
+    <div className='space-y-4'>
+      <DataTableToolbar table={table} />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -90,14 +79,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </TableBody>
         </Table>
       </div>
-      <div className='flex items-center justify-end space-x-2 py-4'>
-        <Button variant='outline' size='sm' onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-          Previous
-        </Button>
-        <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-          Next
-        </Button>
-      </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }
