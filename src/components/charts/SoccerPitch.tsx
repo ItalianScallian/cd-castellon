@@ -201,7 +201,7 @@ const SoccerPitch = ({ matchId }: SoccerPitchProps) => {
     const maxValueCombinationPasses = combinations.sort((a, b) => b.totalValueAdded - a.totalValueAdded)[0]
       ?.totalValueAdded;
     const minValueCombinationPasses = combinations[combinations.length - 1]?.totalValueAdded;
-    const dotColorScale = d3.scaleSequential(d3.interpolateBlues).domain([safeMinValues, safeMaxValues]);
+    const dotColorScale = d3.scaleSequential(d3.interpolateRgb('blue', 'red')).domain([safeMinValues, safeMaxValues]);
     const dotSizeScale = d3.scaleSqrt().domain([0, safeMaxPasses]).range([0.5, 2]); // range of circle radius
     const lineColorScale = d3
       .scaleSequential(d3.interpolateRgb('blue', 'red'))
@@ -212,6 +212,7 @@ const SoccerPitch = ({ matchId }: SoccerPitchProps) => {
     d3.select('.player-circles').remove();
     d3.select('.player-passes').remove();
     d3.select('.player-text').remove();
+    d3.select('.changing-legend').remove();
 
     const playerPassesLayer = svg.append('g').attr('class', 'player-passes');
     const playerCirclesLayer = svg.append('g').attr('class', 'player-circles');
@@ -239,7 +240,7 @@ const SoccerPitch = ({ matchId }: SoccerPitchProps) => {
         .attr('fill', 'none')
         .attr('stroke', dotColorScale(passValue.get(position.player_id) || 0))
         .attr('stroke-width', 0.2);
-      playerCirclesLayer
+      playerTextLayer
         .append('text')
         .attr('x', findAveragePosition[position.player_id].avgX)
         .attr('y', findAveragePosition[position.player_id].avgY)
@@ -252,6 +253,156 @@ const SoccerPitch = ({ matchId }: SoccerPitchProps) => {
 
     const legend = svg.append('g').attr('class', 'legend');
     legend.append('text').attr('x', 0).attr('y', 83).text('Legend').style('font-size', '3px').style('fill', 'grey');
+    legend
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 87)
+      .text('Line Width:')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    legend
+      .append('text')
+      .attr('x', 45)
+      .attr('y', 87)
+      .text('Line Color:')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    legend
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 94)
+      .text('Circle Size:')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    legend
+      .append('text')
+      .attr('x', 45)
+      .attr('y', 94)
+      .text('Circle Color:')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    const changingLegend = svg.append('g').attr('class', 'changing-legend');
+    changingLegend
+      .append('text')
+      .attr('x', 10)
+      .attr('y', 87)
+      .text('1 completed pass')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('text')
+      .attr('x', 25)
+      .attr('y', 87)
+      .text(`${maxCountCombinationPasses} completed passes`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('line')
+      .attr('x1', 12)
+      .attr('y1', 85)
+      .attr('x2', 20)
+      .attr('y2', 83)
+      .attr('stroke', 'grey')
+      .attr('stroke-width', lineSizeScale(1));
+    changingLegend
+      .append('line')
+      .attr('x1', 27)
+      .attr('y1', 85)
+      .attr('x2', 35)
+      .attr('y2', 83)
+      .attr('stroke', 'grey')
+      .attr('stroke-width', lineSizeScale(maxCountCombinationPasses));
+    changingLegend
+      .append('text')
+      .attr('x', 55)
+      .attr('y', 87)
+      .text(`${minValueCombinationPasses} added value`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('text')
+      .attr('x', 75)
+      .attr('y', 87)
+      .text(`${maxValueCombinationPasses} added value`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('line')
+      .attr('x1', 57)
+      .attr('y1', 85)
+      .attr('x2', 65)
+      .attr('y2', 83)
+      .attr('stroke', lineColorScale(minValueCombinationPasses))
+      .attr('stroke-width', 0.3);
+    changingLegend
+      .append('line')
+      .attr('x1', 77)
+      .attr('y1', 85)
+      .attr('x2', 85)
+      .attr('y2', 83)
+      .attr('stroke', lineColorScale(maxValueCombinationPasses))
+      .attr('stroke-width', 0.3);
+    changingLegend
+      .append('circle')
+      .attr('cx', 12)
+      .attr('cy', 91)
+      .attr('r', 0.5)
+      .attr('fill', 'none')
+      .attr('stroke', 'grey')
+      .attr('stroke-width', 0.2);
+    changingLegend
+      .append('circle')
+      .attr('cx', 30)
+      .attr('cy', 90)
+      .attr('r', dotSizeScale(safeMaxPasses))
+      .attr('fill', 'none')
+      .attr('stroke', 'grey')
+      .attr('stroke-width', 0.2);
+    changingLegend
+      .append('text')
+      .attr('x', 10)
+      .attr('y', 94)
+      .text('0 passes')
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('text')
+      .attr('x', 25)
+      .attr('y', 94)
+      .text(`${safeMaxPasses} passes`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+
+    changingLegend
+      .append('circle')
+      .attr('cx', 61)
+      .attr('cy', 90)
+      .attr('r', 1)
+      .attr('fill', 'none')
+      .attr('stroke', dotColorScale(safeMinValues))
+      .attr('stroke-width', 0.2);
+    changingLegend
+      .append('circle')
+      .attr('cx', 80)
+      .attr('cy', 90)
+      .attr('r', 1)
+      .attr('fill', 'none')
+      .attr('stroke', dotColorScale(safeMaxValues))
+      .attr('stroke-width', 0.2);
+    changingLegend
+      .append('text')
+      .attr('x', 55)
+      .attr('y', 94)
+      .text(`${safeMinValues.toFixed(4)} value added`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
+    changingLegend
+      .append('text')
+      .attr('x', 75)
+      .attr('y', 94)
+      .text(`${safeMaxValues.toFixed(4)} value added`)
+      .style('font-size', '1.5px')
+      .style('fill', 'grey');
   }, [matchId, teamName]);
 
   return (
